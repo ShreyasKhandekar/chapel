@@ -67,6 +67,14 @@ Data Parallelism
    Distributions <distributions>
    Replicated Distribution <replicated>
 
+Chapel As A Library
+-------------------
+
+.. toctree::
+   :maxdepth: 1
+
+   C interoperability <interopWithC>
+
 Library Utilities
 -----------------
 
