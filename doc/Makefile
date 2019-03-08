@@ -59,6 +59,7 @@ primers: clean-primers
 	$(CHPL2RST) $(CHPL2RSTOPTS) ../test/release/examples/primers/*.chpl
 	$(CHPL2RST) $(CHPL2RSTOPTS) ../test/release/examples/primers/*doc.chpl --codeblock
 	cp -f $(SOURCEDIR)/meta/primers/* $(SOURCEDIR)/primers
+	cp -f ../test/release/examples/primers/cClient.test.c $(SOURCEDIR)/primers/cClient.c
 
 hellos: clean-hellos
 	@echo
