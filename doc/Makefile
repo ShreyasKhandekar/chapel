@@ -92,19 +92,12 @@ primers:
 	@rm -rf $(CHPL_DOC_PRIMERS_BUILD_DIR)
 	@mkdir -p $(CHPL_DOC_PRIMERS_BUILD_DIR)
 	@#Note - this assumes that we are not in a release tar ball
-<<<<<<< HEAD
 	@$(CHPL2RST) $(CHPL2RSTOPTS) ../test/release/examples/primers/*.chpl
 	@$(CHPL2RST) $(CHPL2RSTOPTS) ../test/release/examples/primers/*doc.chpl --codeblock
 	@mkdir -p $(CHPL_DOC_PRIMERS_RST_DIR)
 	@cp -f $(SOURCEDIR)/meta/primers/* $(CHPL_DOC_PRIMERS_BUILD_DIR)
 	@$(COPY_IF_DIFFERENT) $(CHPL_DOC_PRIMERS_BUILD_DIR) $(CHPL_DOC_PRIMERS_RST_DIR)
 
-=======
-	$(CHPL2RST) $(CHPL2RSTOPTS) ../test/release/examples/primers/*.chpl
-	$(CHPL2RST) $(CHPL2RSTOPTS) ../test/release/examples/primers/*doc.chpl --codeblock
-	cp -f $(SOURCEDIR)/meta/primers/* $(SOURCEDIR)/primers
-	cp -f ../test/release/examples/primers/cClient.test.c $(SOURCEDIR)/primers/cClient.c
->>>>>>> 4850194d273af1f63d5aac0c539d4d47358f0633
 
 examples:
 	@echo
