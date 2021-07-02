@@ -74,14 +74,6 @@ Chapel As A Library
 
    C interoperability <interopWithC>
 
-Chapel As A Library
--------------------
-
-.. toctree::
-   :maxdepth: 1
-
-   C interoperability <interopWithC>
-
 Library Utilities
 -----------------
 
