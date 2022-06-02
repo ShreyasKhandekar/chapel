@@ -4706,7 +4706,7 @@ proc readline(arg: [] uint(8), out numRead : int, start = arg.domain.low,
 
 /* use new readLine functions */
 deprecated "readline is now deprecated. use readLine instead"
-proc readLine(ref arg: [] ?t, maxSize=a.size, stripNewline=false): int throws 
+proc readLine(ref arg: [] ?t, maxSize=arg.size, stripNewline=false): int throws 
       where (t == uint(8) || t == int(8)) && arg.rank == 1 && arg.isRectangular() {
   return stdin.readLine(arg, maxSize, stripNewline);
 }
