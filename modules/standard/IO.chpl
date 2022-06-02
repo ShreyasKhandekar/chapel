@@ -3953,7 +3953,7 @@ proc channel.readLine(ref s: string, maxSize=-1, stripNewline=false): bool throw
       myStyle.string_format = QIO_STRING_FORMAT_TOEND;
       myStyle.string_end = 0x0a; // ascii newline.
       if(maxSize >= 0){
-        myStyle.max_width_characters = maxSize
+        myStyle.max_width_characters = maxSize;
       }
       this._set_styleInternal(myStyle);
       try _readOne(iokind.dynamic, s, origLocale);
@@ -3965,7 +3965,7 @@ proc channel.readLine(ref s: string, maxSize=-1, stripNewline=false): bool throw
   // TODO find a more memory efficient way to do this
   // Maybe have a QIO_STRING_FORMAT_TOEND_DROPEND which drops the last char
   if(stripNewline){
-    s = s.strip(string="\n", leading = false);
+    s = s.strip(chars="\n", leading = false);
   }
 
   return true;
@@ -3987,7 +3987,7 @@ proc channel.readLine(ref b: bytes, maxSize=-1, stripNewline=false): bool throws
       myStyle.string_format = QIO_STRING_FORMAT_TOEND;
       myStyle.string_end = 0x0a; // ascii newline.
       if(maxSize >= 0){
-        myStyle.max_width_bytes = maxSize
+        myStyle.max_width_bytes = maxSize;
       }
       this._set_styleInternal(myStyle);
       try _readOne(iokind.dynamic, s, origLocale);
