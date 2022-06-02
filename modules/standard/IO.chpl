@@ -3867,12 +3867,13 @@ proc channel.readline(arg: [] uint(8), out numRead : int, start = arg.domain.low
 }
 
 /* New Array readLine method */
-proc channel.readLine(ref arg: [] ?t, maxSize=a.size, stripNewline=false): int throws 
+proc channel.readLine(ref arg: [] ?t, maxSize=arg.size, stripNewline=false): int throws 
       where (t == uint(8) || t == int(8)) && arg.rank == 1 && arg.isRectangular() {
-  if arg.size == 0 || amount == 0 || 
+  if arg.size == 0 || maxSize == 0 || 
   ( arg.domain.low + maxSize - 1 > arg.domain.high) then return 0;
 
   var err:syserr = ENOERR;
+  var numRead;
   on this.home {
     try this.lock(); defer { this.unlock(); }
     param newLineChar = 0x0A;
@@ -3887,8 +3888,8 @@ proc channel.readLine(ref arg: [] ?t, maxSize=a.size, stripNewline=false): int t
       i += 1;
       if got == newLineChar then break;
     }
-    var numRead = i - arg.domain.low;
-    if i == start && got < 0 then err = (-got):syserr;
+    numRead = i - arg.domain.low;
+    if i == arg.domain.low && got < 0 then err = (-got):syserr;
   }
 
   if !err {
@@ -3990,7 +3991,7 @@ proc channel.readLine(ref b: bytes, maxSize=-1, stripNewline=false): bool throws
         myStyle.max_width_bytes = maxSize;
       }
       this._set_styleInternal(myStyle);
-      try _readOne(iokind.dynamic, s, origLocale);
+      try _readOne(iokind.dynamic, b, origLocale);
     }
   } catch err: SystemError {
     if err.err != EEOF then throw err;
