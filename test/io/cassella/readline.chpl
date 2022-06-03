@@ -1,6 +1,6 @@
 /*
- * Tests that readline(array, amount=) returns the number of bytes we
- * asked for, and that readline(array) will read the right number of
+ * Tests that readLine(array, maxSize=) returns the number of bytes we
+ * asked for, and that readLine(array) will read the right number of
  * bytes.
  */
 use IO;
@@ -26,12 +26,12 @@ proc check_expected(data, expected:string, len) {
 
 /*
  * Read amount bytes from input into an array[0..9], and check that
- * the result is expected.  If amount is -1, allow readline() to use
- * its default values for start and amount, but the result should
+ * the result is expected.  If amount is -1, allow readLine() to use
+ * its default values for amount, but the result should
  * still match expected.
  */
-proc test_readline(amount: int, input: string, expected: string, stripNewline=false) {
-  /* Write input string to f, so we can readline() it out */
+proc test_readLine(amount: int, input: string, expected: string, stripNewline=false) {
+  /* Write input string to f, so we can readLine() it out */
   var f = openmem();
   var w = f.writer();
 
@@ -48,8 +48,8 @@ proc test_readline(amount: int, input: string, expected: string, stripNewline=fa
     numRead = r.readLine(data, stripNewline = stripNewline);
   }
 
-  var invoke_string = if amount >= 0 then "readline(maxSize="+amount:string+")" else
-					    "readline()";
+  var invoke_string = if amount >= 0 then "readLine(maxSize="+amount:string+")" else
+					    "readLine()";
 
   if (numRead==0) {
     writeln(invoke_string, " failed");
@@ -61,11 +61,11 @@ proc test_readline(amount: int, input: string, expected: string, stripNewline=fa
   }
 }
 
-test_readline(9, "foop", "foop\n");
-test_readline(9, "foop", "foop", stripNewline = true);
-test_readline(9,  "We apologize for the inconvenience", "We apolog");
-test_readline(10, "Share and Enjoy", "Share and ");
+test_readLine(9, "foop", "foop\n");
+test_readLine(9, "foop", "foop", stripNewline = true);
+test_readLine(9,  "We apologize for the inconvenience", "We apolog");
+test_readLine(10, "Share and Enjoy", "Share and ");
 
-// Test that readline's formal's defaults fill the array.
+// Test that readLine's formal's defaults fill the array.
 // This should give us 10 bytes.
-test_readline(-1, "Your Plastic Pal Who's Fun To Be With", "Your Plast");
+test_readLine(-1, "Your Plastic Pal Who's Fun To Be With", "Your Plast");
