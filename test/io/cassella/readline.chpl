@@ -30,7 +30,7 @@ proc check_expected(data, expected:string, len) {
  * its default values for start and amount, but the result should
  * still match expected.
  */
-proc test_readline(amount: int, input: string, expected: string) {
+proc test_readline(amount: int, input: string, expected: string, stripNewline=false) {
   /* Write input string to f, so we can readline() it out */
   var f = openmem();
   var w = f.writer();
@@ -38,21 +38,20 @@ proc test_readline(amount: int, input: string, expected: string) {
   w.writeln(input);
 
   var r = f.reader();
-  var ret: bool;
   var numRead: int;
 
 
   var data: [0..9] uint(8);
   if amount >= 0 {
-    ret = r.readline(data, numRead, start=0, amount=amount);
+    numRead = r.readLine(data, maxSize=amount, stripNewline = stripNewline);
   } else {
-    ret = r.readline(data, numRead);
+    numRead = r.readLine(data, stripNewline = stripNewline);
   }
 
-  var invoke_string = if amount >= 0 then "readline(amount="+amount:string+")" else
+  var invoke_string = if amount >= 0 then "readline(maxSize="+amount:string+")" else
 					    "readline()";
 
-  if (!ret) {
+  if (numRead==0) {
     writeln(invoke_string, " failed");
   } else {
     writeln(invoke_string," returned ", numRead, " bytes");
@@ -63,6 +62,7 @@ proc test_readline(amount: int, input: string, expected: string) {
 }
 
 test_readline(9, "foop", "foop\n");
+test_readline(9, "foop", "foop", stripNewline = true);
 test_readline(9,  "We apologize for the inconvenience", "We apolog");
 test_readline(10, "Share and Enjoy", "Share and ");
 

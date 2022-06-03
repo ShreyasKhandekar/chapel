@@ -3830,7 +3830,7 @@ proc channel.readHelper(ref args ...?k, style:iostyleInternal):bool throws {
   :arg amount: The maximum amount of bytes to read.
   :returns: true if the bytes were read without error.
 */
-deprecated "channel.readline(arg : [] uint(8), numRead) is deprecated. Use channel.readLine(arg) instead"
+deprecated "channel.readline is deprecated. Use :proc:`channel.readLine` instead"
 proc channel.readline(arg: [] uint(8), out numRead : int, start = arg.domain.low,
                       amount = arg.domain.high - start + 1) : bool throws
                       where arg.rank == 1 && arg.isRectangular() {
@@ -3873,7 +3873,7 @@ proc channel.readLine(ref arg: [] ?t, maxSize=arg.size, stripNewline=false): int
   ( arg.domain.low + maxSize - 1 > arg.domain.high) then return 0;
 
   var err:syserr = ENOERR;
-  var numRead;
+  var numRead:int;
   on this.home {
     try this.lock(); defer { this.unlock(); }
     param newLineChar = 0x0A;
@@ -3912,7 +3912,7 @@ proc channel.readLine(ref arg: [] ?t, maxSize=arg.size, stripNewline=false): int
 
   :throws SystemError: Thrown if data could not be read from the channel.
 */
-deprecated "channel.readline is deprecated. Use channel.readLine instead"
+deprecated "channel.readline is deprecated. Use :proc:`channel.readLine` instead"
 proc channel.readline(ref arg: ?t): bool throws where t==string || t==bytes {
   if writing then compilerError("read on write-only channel");
   const origLocale = this.getLocaleOfIoRequest();
@@ -3954,7 +3954,7 @@ proc channel.readLine(ref s: string, maxSize=-1, stripNewline=false): bool throw
       myStyle.string_format = QIO_STRING_FORMAT_TOEND;
       myStyle.string_end = 0x0a; // ascii newline.
       if(maxSize >= 0){
-        myStyle.max_width_characters = maxSize;
+        try myStyle.max_width_characters = maxSize.safeCast(uint(32)); // Probably should change maxSize's type to be safe to cast
       }
       this._set_styleInternal(myStyle);
       try _readOne(iokind.dynamic, s, origLocale);
@@ -3988,7 +3988,7 @@ proc channel.readLine(ref b: bytes, maxSize=-1, stripNewline=false): bool throws
       myStyle.string_format = QIO_STRING_FORMAT_TOEND;
       myStyle.string_end = 0x0a; // ascii newline.
       if(maxSize >= 0){
-        myStyle.max_width_bytes = maxSize;
+        try myStyle.max_width_bytes = maxSize.safeCast(uint(32)); // Probably should change maxSize's type to be safe to cast
       }
       this._set_styleInternal(myStyle);
       try _readOne(iokind.dynamic, b, origLocale);
@@ -4697,7 +4697,7 @@ proc read(type t ...?numTypes) throws {
   return stdin.read((...t));
 }
 /* Equivalent to ``stdin.readline``.  See :proc:`channel.readline` */
-deprecated "readline is now deprecated. use readLine instead"
+deprecated "readline is deprecated. Use :proc:`readLine` instead"
 proc readline(arg: [] uint(8), out numRead : int, start = arg.domain.low,
               amount = arg.domain.high - start + 1) : bool throws
                 where arg.rank == 1 && arg.isRectangular() {
@@ -4705,17 +4705,17 @@ proc readline(arg: [] uint(8), out numRead : int, start = arg.domain.low,
 }
 
 /* use new readLine functions */
-deprecated "readline is now deprecated. use readLine instead"
 proc readLine(ref arg: [] ?t, maxSize=arg.size, stripNewline=false): int throws 
       where (t == uint(8) || t == int(8)) && arg.rank == 1 && arg.isRectangular() {
   return stdin.readLine(arg, maxSize, stripNewline);
 }
 /* Equivalent to ``stdin.readline``.  See :proc:`channel.readline` */
+deprecated "readline is deprecated. Use :proc:`readLine` instead"
 proc readline(ref arg: ?t): bool throws where t==string || t==bytes {
   return stdin.readline(arg);
 }
 
-/* New convenience functions for readLine */
+/* New convenience functions for readLine. See :proc:`channel.readLine`*/
 proc readLine(ref s: string, maxSize=-1, stripNewline=false): bool throws{
   return stdin.readLine(s, maxSize, stripNewline);
 }
