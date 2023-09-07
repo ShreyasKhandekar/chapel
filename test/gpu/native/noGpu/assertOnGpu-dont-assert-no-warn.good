@@ -1,3 +1,5 @@
 warning: The prototype GPU support implies --no-checks. This may impact debuggability. To suppress this warning, compile with --no-checks explicitly
+warning: The variable 'gpuNoCpuModeWarning' is unstable and its interface is subject to change in the future
+note: 'gpuNoCpuModeWarning' was set via a compiler flag
 LOCALE0-GPU0 1 2 3 4 5 6 7 8 9 10
 LOCALE0-GPU1 1 2 3 4 5 6 7 8 9 10
